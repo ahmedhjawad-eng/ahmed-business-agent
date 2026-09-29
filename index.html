@@ -1,718 +1,967 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ahmed Business Agent</title>
 
-    <title>Ahmed Business Agent</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Tahoma, sans-serif;
+    }
 
-    <style>
+    body {
+      background: #f4f6f9;
+      color: #1f2937;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    header {
+      background: #111827;
+      color: white;
+      padding: 18px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: #f5f7fb;
-            color: #1f2937;
-        }
+    header h1 {
+      font-size: 22px;
+    }
 
-        .header {
-            background: #111827;
-            color: white;
-            padding: 20px;
-        }
+    .connection {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
 
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
 
-        .header p {
-            margin: 8px 0 0;
-            color: #cbd5e1;
-        }
+    .dot.online {
+      background: #22c55e;
+    }
 
-        .container {
-            max-width: 1100px;
-            margin: auto;
-            padding: 20px;
-        }
+    .dot.offline {
+      background: #ef4444;
+    }
 
-        .agent-box {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-            margin-bottom: 20px;
-        }
+    .container {
+      max-width: 1250px;
+      margin: auto;
+      padding: 25px;
+    }
 
-        .agent-box h2 {
-            margin-top: 0;
-        }
+    .welcome {
+      margin-bottom: 25px;
+    }
 
-        .command {
-            display: flex;
-            gap: 10px;
-        }
+    .welcome h2 {
+      font-size: 25px;
+      margin-bottom: 7px;
+    }
 
-        .command input {
-            flex: 1;
-            padding: 15px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            font-size: 16px;
-        }
+    .welcome p {
+      color: #6b7280;
+    }
 
-        .command button {
-            padding: 15px 25px;
-            border: none;
-            border-radius: 10px;
-            background: #2563eb;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    .command-box {
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
 
-        .command button:hover {
-            background: #1d4ed8;
-        }
+    .command-box h3 {
+      margin-bottom: 12px;
+    }
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
+    .command-row {
+      display: flex;
+      gap: 10px;
+    }
 
-        .card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-        }
+    .command-row input {
+      flex: 1;
+      padding: 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 15px;
+      outline: none;
+    }
 
-        .card .icon {
-            font-size: 30px;
-        }
+    .command-row input:focus {
+      border-color: #2563eb;
+    }
 
-        .card h3 {
-            margin-bottom: 5px;
-        }
+    button {
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
 
-        .number {
-            font-size: 28px;
-            font-weight: bold;
-        }
+    button:hover {
+      background: #1d4ed8;
+    }
 
-        .sections {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
 
-        .section {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-            transition: 0.2s;
-        }
+    .card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
 
-        .section:hover {
-            transform: translateY(-2px);
-        }
+    .card-title {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
 
-        .response {
-            margin-top: 15px;
-            padding: 15px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            display: none;
-        }
+    .card-number {
+      font-size: 32px;
+      font-weight: bold;
+      color: #111827;
+    }
 
-        .status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 14px;
-        }
+    .section {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
 
-        .connected {
-            background: #dcfce7;
-            color: #166534;
-        }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
 
-        .error {
-            background: #fee2e2;
-            color: #991b1b;
-        }
+    .section-header h3 {
+      font-size: 19px;
+    }
 
-        @media (max-width: 600px) {
+    .refresh {
+      background: #111827;
+      padding: 8px 14px;
+    }
 
-            .command {
-                flex-direction: column;
-            }
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
 
-            .command button {
-                width: 100%;
-            }
+    .item {
+      border: 1px solid #e5e7eb;
+      padding: 15px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
 
-        }
+    .item-title {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
 
-    </style>
+    .item-details {
+      color: #6b7280;
+      font-size: 13px;
+    }
 
+    .badge {
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .badge-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-new {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .badge-scheduled {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .empty {
+      text-align: center;
+      color: #9ca3af;
+      padding: 25px;
+    }
+
+    .error {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 12px;
+      border-radius: 10px;
+      margin-top: 15px;
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      text-align: center;
+      color: #9ca3af;
+      padding: 30px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .container {
+        padding: 15px;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .command-row {
+        flex-direction: column;
+      }
+
+      .item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
 </head>
-
 
 <body>
 
+<header>
+  <h1>🤖 Ahmed Business Agent</h1>
 
-<header class="header">
-
-    <h1>🤖 Ahmed Business Agent</h1>
-
-    <p>
-        مساعدك لإدارة السيارات والإطارات والمناقصات والمهام
-    </p>
-
+  <div class="connection">
+    <span id="connectionDot" class="dot"></span>
+    <span id="connectionText">جاري الاتصال...</span>
+  </div>
 </header>
 
+<div class="container">
 
+  <div class="welcome">
+    <h2>لوحة التحكم</h2>
+    <p>مساعدك الذكي لإدارة السيارات والإطارات والمناقصات والمتابعات.</p>
+  </div>
 
-<main class="container">
+  <!-- Command -->
+  <div class="command-box">
+    <h3>💬 أوامر Agent</h3>
 
+    <div class="command-row">
+      <input
+        id="commandInput"
+        type="text"
+        placeholder="مثال: ذكرني باچر أتابع شركة بريجستون"
+      />
 
-    <!-- Agent -->
+      <button onclick="sendCommand()">
+        تنفيذ
+      </button>
+    </div>
 
-    <section class="agent-box">
+    <div id="commandResult" class="error"></div>
+  </div>
 
-        <h2>🤖 شنو تريد تسوي؟</h2>
+  <!-- Dashboard Cards -->
+  <div class="cards">
 
-        <div class="command">
+    <div class="card">
+      <div class="card-title">📋 المهام المعلقة</div>
+      <div id="tasksCount" class="card-number">-</div>
+    </div>
 
-            <input
-                id="commandInput"
-                type="text"
-                placeholder="مثلاً: ذكرني باچر أتابع شركة بريجستون"
-            >
+    <div class="card">
+      <div class="card-title">📅 المواعيد</div>
+      <div id="appointmentsCount" class="card-number">-</div>
+    </div>
 
-            <button onclick="sendCommand()">
-                إرسال
-            </button>
+    <div class="card">
+      <div class="card-title">🔔 المتابعات</div>
+      <div id="followUpsCount" class="card-number">-</div>
+    </div>
 
-        </div>
+    <div class="card">
+      <div class="card-title">📑 المناقصات الجديدة</div>
+      <div id="tendersCount" class="card-number">-</div>
+    </div>
 
+  </div>
 
-        <div id="response" class="response"></div>
+  <!-- Tasks -->
+  <div class="section">
 
-        <div id="connectionStatus" class="status">
-            ⏳ جاري الاتصال بقاعدة البيانات...
-        </div>
+    <div class="section-header">
+      <h3>📋 آخر المهام</h3>
+      <button class="refresh" onclick="loadTasks()">تحديث</button>
+    </div>
 
-    </section>
+    <div id="tasksList" class="list">
+      <div class="empty">جاري تحميل المهام...</div>
+    </div>
 
+  </div>
 
+  <!-- Appointments -->
+  <div class="section">
 
-    <!-- Dashboard -->
+    <div class="section-header">
+      <h3>📅 المواعيد القادمة</h3>
+      <button class="refresh" onclick="loadAppointments()">تحديث</button>
+    </div>
 
-    <section class="cards">
+    <div id="appointmentsList" class="list">
+      <div class="empty">جاري تحميل المواعيد...</div>
+    </div>
 
+  </div>
 
-        <div class="card">
+  <!-- Follow Ups -->
+  <div class="section">
 
-            <div class="icon">
-                📋
-            </div>
+    <div class="section-header">
+      <h3>🔔 المتابعات</h3>
+      <button class="refresh" onclick="loadFollowUps()">تحديث</button>
+    </div>
 
-            <h3>
-                المهام
-            </h3>
+    <div id="followUpsList" class="list">
+      <div class="empty">جاري تحميل المتابعات...</div>
+    </div>
 
-            <div
-                id="tasksCount"
-                class="number"
-            >
-                0
-            </div>
+  </div>
 
-        </div>
+  <!-- Tenders -->
+  <div class="section">
 
+    <div class="section-header">
+      <h3>📑 آخر المناقصات</h3>
+      <button class="refresh" onclick="loadTenders()">تحديث</button>
+    </div>
 
+    <div id="tendersList" class="list">
+      <div class="empty">جاري تحميل المناقصات...</div>
+    </div>
 
-        <div class="card">
+  </div>
 
-            <div class="icon">
-                📅
-            </div>
+</div>
 
-            <h3>
-                المواعيد
-            </h3>
-
-            <div
-                id="appointmentsCount"
-                class="number"
-            >
-                0
-            </div>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <div class="icon">
-                🔔
-            </div>
-
-            <h3>
-                المتابعات
-            </h3>
-
-            <div
-                id="followUpsCount"
-                class="number"
-            >
-                0
-            </div>
-
-        </div>
-
-
-
-        <div class="card">
-
-            <div class="icon">
-                📢
-            </div>
-
-            <h3>
-                المناقصات
-            </h3>
-
-            <div
-                id="tendersCount"
-                class="number"
-            >
-                0
-            </div>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- Sections -->
-
-    <section class="sections">
-
-
-        <div class="section">
-
-            🚗
-
-            <h3>
-                إدارة السيارات
-            </h3>
-
-            <p>
-                الشركات والمصارف والعروض والمتابعات
-            </p>
-
-        </div>
-
-
-
-        <div class="section">
-
-            🛞
-
-            <h3>
-                إدارة الإطارات
-            </h3>
-
-            <p>
-                الشركات والأسعار والعروض والمبيعات
-            </p>
-
-        </div>
-
-
-
-        <div class="section">
-
-            📢
-
-            <h3>
-                المناقصات
-            </h3>
-
-            <p>
-                البحث عن المناقصات وطلبات الشراء
-            </p>
-
-        </div>
-
-
-
-        <div class="section">
-
-            📅
-
-            <h3>
-                المواعيد والمتابعات
-            </h3>
-
-            <p>
-                تنظيم المواعيد ومتابعة العملاء
-            </p>
-
-        </div>
-
-
-    </section>
-
-
-</main>
-
+<footer>
+  Ahmed Business Agent © 2026
+</footer>
 
 
 <script>
 
-
-/*
-==================================================
-SUPABASE SETTINGS
-==================================================
-
-ضع بيانات مشروعك هنا.
-
-لا تستخدم service_role key.
-
-استخدم Publishable key أو anon key فقط.
-*/
-
+/* =========================================================
+   SUPABASE CONNECTION
+========================================================= */
 
 const SUPABASE_URL =
-    "ضعsb_publishable_L39bdDsF-CW03mkZ8siGRQ_s3LtFpUc_هنا_Project_URL";
-
+  "https://bzquvyxrksxcdkydbups.supabase.co";
 
 const SUPABASE_KEY =
-    "ضع_sb_secret_qucZTXqHhASgfMUtMgO2Mg_gZogGKBQهنا_Publishable_Key_او_anon_key";
+  "sb_publishable_L39bdDsF-CW03mkZ8siGRQ_s3LtFpUc";
 
 
+/* =========================================================
+   SUPABASE REQUEST
+========================================================= */
 
-/*
-==================================================
-SUPABASE REQUEST
-==================================================
-*/
+async function supabaseRequest(table, query = "") {
 
-async function supabaseRequest(
-    table,
-    query = ""
-) {
+  const url =
+    `${SUPABASE_URL}/rest/v1/${table}${query}`;
 
-    const response = await fetch(
-        `${SUPABASE_URL}/rest/v1/${table}${query}`,
-        {
+  const response = await fetch(url, {
+    method: "GET",
 
-            method: "GET",
-
-            headers: {
-
-                "apikey": SUPABASE_KEY,
-
-                "Authorization":
-                    `Bearer ${SUPABASE_KEY}`,
-
-                "Content-Type":
-                    "application/json"
-
-            }
-
-        }
-    );
-
-
-    if (!response.ok) {
-
-        const errorText =
-            await response.text();
-
-        throw new Error(
-            errorText
-        );
-
+    headers: {
+      "apikey": SUPABASE_KEY,
+      "Authorization": `Bearer ${SUPABASE_KEY}`,
+      "Content-Type": "application/json"
     }
+  });
 
+  const text = await response.text();
 
-    return await response.json();
+  if (!response.ok) {
 
+    throw new Error(
+      `Supabase Error ${response.status}: ${text}`
+    );
+  }
+
+  if (!text) {
+    return [];
+  }
+
+  return JSON.parse(text);
 }
 
 
+/* =========================================================
+   CONNECTION STATUS
+========================================================= */
 
-/*
-==================================================
-LOAD TASKS
-==================================================
-*/
+function setConnection(status, message) {
+
+  const dot = document.getElementById("connectionDot");
+  const text = document.getElementById("connectionText");
+
+  dot.classList.remove("online", "offline");
+
+  if (status === "online") {
+    dot.classList.add("online");
+  }
+
+  if (status === "offline") {
+    dot.classList.add("offline");
+  }
+
+  text.textContent = message;
+}
+
+
+/* =========================================================
+   LOAD TASKS
+========================================================= */
 
 async function loadTasks() {
 
-    const tasks =
-        await supabaseRequest(
-            "tasks",
-            "?select=id,status"
-        );
+  const list = document.getElementById("tasksList");
 
+  list.innerHTML =
+    '<div class="empty">جاري تحميل المهام...</div>';
 
-    const pendingTasks =
-        tasks.filter(
-            task =>
-                task.status === "pending"
-        );
+  try {
 
+    const data = await supabaseRequest(
+      "tasks",
+      "?select=id,title,description,department,priority,status,due_date&order=id.desc&limit=10"
+    );
 
-    document.getElementById(
-        "tasksCount"
-    ).textContent =
-        pendingTasks.length;
+    const pending = data.filter(
+      item => item.status === "pending"
+    ).length;
 
+    document.getElementById("tasksCount").textContent =
+      pending;
+
+    if (!data.length) {
+
+      list.innerHTML =
+        '<div class="empty">لا توجد مهام حالياً</div>';
+
+      return;
+    }
+
+    list.innerHTML = data.map(task => {
+
+      const priority =
+        task.priority === "high"
+          ? "🔴 عالي"
+          : task.priority === "normal"
+          ? "🟡 عادي"
+          : "🟢 منخفض";
+
+      return `
+        <div class="item">
+
+          <div>
+            <div class="item-title">
+              ${escapeHtml(task.title || "بدون عنوان")}
+            </div>
+
+            <div class="item-details">
+              ${escapeHtml(task.department || "غير محدد")}
+              |
+              ${priority}
+              ${
+                task.due_date
+                  ? " | الاستحقاق: " +
+                    formatDate(task.due_date)
+                  : ""
+              }
+            </div>
+          </div>
+
+          <span class="badge badge-pending">
+            ${escapeHtml(task.status || "pending")}
+          </span>
+
+        </div>
+      `;
+
+    }).join("");
+
+  } catch (error) {
+
+    console.error(error);
+
+    list.innerHTML =
+      `<div class="empty">تعذر تحميل المهام</div>`;
+
+    showError(error.message);
+  }
 }
 
 
-
-/*
-==================================================
-LOAD APPOINTMENTS
-==================================================
-*/
+/* =========================================================
+   LOAD APPOINTMENTS
+========================================================= */
 
 async function loadAppointments() {
 
-    const appointments =
-        await supabaseRequest(
-            "appointments",
-            "?select=id,status"
-        );
+  const list =
+    document.getElementById("appointmentsList");
 
+  list.innerHTML =
+    '<div class="empty">جاري تحميل المواعيد...</div>';
 
-    const activeAppointments =
-        appointments.filter(
-            appointment =>
-                appointment.status === "scheduled"
-        );
+  try {
 
+    const data = await supabaseRequest(
+      "appointments",
+      "?select=id,title,description,appointment_date,status&order=appointment_date.asc&limit=10"
+    );
+
+    const scheduled = data.filter(
+      item => item.status === "scheduled"
+    ).length;
 
     document.getElementById(
-        "appointmentsCount"
-    ).textContent =
-        activeAppointments.length;
+      "appointmentsCount"
+    ).textContent = scheduled;
 
+    if (!data.length) {
+
+      list.innerHTML =
+        '<div class="empty">لا توجد مواعيد حالياً</div>';
+
+      return;
+    }
+
+    list.innerHTML = data.map(item => {
+
+      return `
+        <div class="item">
+
+          <div>
+            <div class="item-title">
+              ${escapeHtml(item.title || "بدون عنوان")}
+            </div>
+
+            <div class="item-details">
+              ${item.appointment_date
+                ? formatDate(item.appointment_date)
+                : "بدون تاريخ"}
+            </div>
+          </div>
+
+          <span class="badge badge-scheduled">
+            ${escapeHtml(item.status || "scheduled")}
+          </span>
+
+        </div>
+      `;
+
+    }).join("");
+
+  } catch (error) {
+
+    console.error(error);
+
+    list.innerHTML =
+      '<div class="empty">تعذر تحميل المواعيد</div>';
+
+    showError(error.message);
+  }
 }
 
 
-
-/*
-==================================================
-LOAD FOLLOW UPS
-==================================================
-*/
+/* =========================================================
+   LOAD FOLLOW UPS
+========================================================= */
 
 async function loadFollowUps() {
 
-    const followUps =
-        await supabaseRequest(
-            "follow_ups",
-            "?select=id"
-        );
+  const list =
+    document.getElementById("followUpsList");
 
+  list.innerHTML =
+    '<div class="empty">جاري تحميل المتابعات...</div>';
+
+  try {
+
+    const data = await supabaseRequest(
+      "follow_ups",
+      "?select=id,title,notes,follow_up_date,result&order=id.desc&limit=10"
+    );
 
     document.getElementById(
-        "followUpsCount"
-    ).textContent =
-        followUps.length;
+      "followUpsCount"
+    ).textContent = data.length;
 
+    if (!data.length) {
+
+      list.innerHTML =
+        '<div class="empty">لا توجد متابعات حالياً</div>';
+
+      return;
+    }
+
+    list.innerHTML = data.map(item => {
+
+      return `
+        <div class="item">
+
+          <div>
+
+            <div class="item-title">
+              ${escapeHtml(item.title || "بدون عنوان")}
+            </div>
+
+            <div class="item-details">
+
+              ${
+                item.follow_up_date
+                  ? "المتابعة: " +
+                    formatDate(item.follow_up_date)
+                  : ""
+              }
+
+              ${
+                item.result
+                  ? " | النتيجة: " +
+                    escapeHtml(item.result)
+                  : ""
+              }
+
+            </div>
+
+          </div>
+
+          <span class="badge badge-new">
+            متابعة
+          </span>
+
+        </div>
+      `;
+
+    }).join("");
+
+  } catch (error) {
+
+    console.error(error);
+
+    list.innerHTML =
+      '<div class="empty">تعذر تحميل المتابعات</div>';
+
+    showError(error.message);
+  }
 }
 
 
-
-/*
-==================================================
-LOAD TENDERS
-==================================================
-*/
+/* =========================================================
+   LOAD TENDERS
+========================================================= */
 
 async function loadTenders() {
 
-    const tenders =
-        await supabaseRequest(
-            "tenders",
-            "?select=id,status"
-        );
+  const list =
+    document.getElementById("tendersList");
 
+  list.innerHTML =
+    '<div class="empty">جاري تحميل المناقصات...</div>';
 
-    const newTenders =
-        tenders.filter(
-            tender =>
-                tender.status === "new"
-        );
+  try {
 
+    const data = await supabaseRequest(
+      "tenders",
+      "?select=id,title,organization,category,governorate,deadline,status,importance,source_url&order=id.desc&limit=10"
+    );
+
+    const newTenders = data.filter(
+      item => item.status === "new"
+    ).length;
 
     document.getElementById(
-        "tendersCount"
-    ).textContent =
-        newTenders.length;
+      "tendersCount"
+    ).textContent = newTenders;
 
+    if (!data.length) {
+
+      list.innerHTML =
+        '<div class="empty">لا توجد مناقصات حالياً</div>';
+
+      return;
+    }
+
+    list.innerHTML = data.map(tender => {
+
+      const importance =
+        tender.importance === "high"
+          ? "🔴 مهم"
+          : tender.importance === "normal"
+          ? "🟡 عادي"
+          : "🟢 منخفض";
+
+      return `
+        <div class="item">
+
+          <div>
+
+            <div class="item-title">
+              ${escapeHtml(tender.title || "بدون عنوان")}
+            </div>
+
+            <div class="item-details">
+
+              ${escapeHtml(
+                tender.organization || "جهة غير محددة"
+              )}
+
+              ${
+                tender.governorate
+                  ? " | " +
+                    escapeHtml(tender.governorate)
+                  : ""
+              }
+
+              ${
+                tender.deadline
+                  ? " | آخر موعد: " +
+                    formatDate(tender.deadline)
+                  : ""
+              }
+
+              | ${importance}
+
+            </div>
+
+          </div>
+
+          <span class="badge badge-new">
+            ${escapeHtml(tender.status || "new")}
+          </span>
+
+        </div>
+      `;
+
+    }).join("");
+
+  } catch (error) {
+
+    console.error(error);
+
+    list.innerHTML =
+      '<div class="empty">تعذر تحميل المناقصات</div>';
+
+    showError(error.message);
+  }
 }
 
 
-
-/*
-==================================================
-LOAD DASHBOARD
-==================================================
-*/
+/* =========================================================
+   LOAD EVERYTHING
+========================================================= */
 
 async function loadDashboard() {
 
-    const status =
-        document.getElementById(
-            "connectionStatus"
-        );
+  try {
+
+    await Promise.all([
+      loadTasks(),
+      loadAppointments(),
+      loadFollowUps(),
+      loadTenders()
+    ]);
+
+    setConnection(
+      "online",
+      "متصل بقاعدة البيانات"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    setConnection(
+      "offline",
+      "تعذر الاتصال بقاعدة البيانات"
+    );
+  }
+}
 
 
-    try {
+/* =========================================================
+   COMMAND BOX
+========================================================= */
 
-        await loadTasks();
+function sendCommand() {
 
-        await loadAppointments();
+  const input =
+    document.getElementById("commandInput");
 
-        await loadFollowUps();
+  const result =
+    document.getElementById("commandResult");
 
-        await loadTenders();
+  const command =
+    input.value.trim();
 
+  if (!command) {
 
-        status.className =
-            "status connected";
+    result.style.display = "block";
 
+    result.textContent =
+      "اكتب الأمر أولاً.";
 
-        status.innerHTML =
-            "🟢 متصل بقاعدة البيانات بنجاح";
+    return;
+  }
 
+  result.style.display = "block";
 
-    }
+  result.style.background = "#dbeafe";
+  result.style.color = "#1e40af";
 
-    catch (error) {
-
-        console.error(
-            "Supabase Error:",
-            error
-        );
-
-
-        status.className =
-            "status error";
-
-
-        status.innerHTML =
-            "🔴 تعذر الاتصال بقاعدة البيانات";
-
-
-        console.error(error);
-
-    }
+  result.textContent =
+    "استلمت الأمر: " + command +
+    "\n\nميزة الذكاء الاصطناعي والأوامر التلقائية راح نربطها بالمرحلة القادمة.";
 
 }
 
 
+/* =========================================================
+   HELPERS
+========================================================= */
 
-/*
-==================================================
-AGENT COMMAND
-==================================================
-*/
+function formatDate(dateString) {
 
-async function sendCommand() {
+  if (!dateString) return "";
 
-    const input =
-        document.getElementById(
-            "commandInput"
-        );
+  const date =
+    new Date(dateString);
 
+  if (isNaN(date.getTime())) {
+    return dateString;
+  }
 
-    const response =
-        document.getElementById(
-            "response"
-        );
-
-
-    const command =
-        input.value.trim();
-
-
-    if (!command) {
-
-        response.style.display =
-            "block";
-
-
-        response.innerHTML =
-            "⚠️ اكتب الأمر أولاً.";
-
-
-        return;
-
+  return date.toLocaleString(
+    "ar-IQ",
+    {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit"
     }
-
-
-    response.style.display =
-        "block";
-
-
-    response.innerHTML =
-
-        "⏳ استلمت الأمر:<br><br>" +
-
-        "<strong>" +
-
-        command +
-
-        "</strong><br><br>" +
-
-        "🤖 حالياً الواجهة تستلم الأمر. " +
-
-        "بالخطوة القادمة نربط الذكاء الاصطناعي حتى يفهم الأمر وينفذه تلقائياً.";
-
-
-    input.value = "";
-
+  );
 }
 
 
+function escapeHtml(value) {
 
-/*
-==================================================
-START
-==================================================
-*/
+  if (value === null ||
+      value === undefined) {
+    return "";
+  }
 
-loadDashboard();
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
 
+
+function showError(message) {
+
+  const result =
+    document.getElementById("commandResult");
+
+  result.style.display = "block";
+
+  result.style.background = "#fee2e2";
+  result.style.color = "#991b1b";
+
+  result.textContent =
+    message;
+}
+
+
+/* =========================================================
+   START
+========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    loadDashboard();
+
+    document
+      .getElementById("commandInput")
+      .addEventListener(
+        "keydown",
+        function(event) {
+
+          if (event.key === "Enter") {
+            sendCommand();
+          }
+
+        }
+      );
+
+  }
+);
 
 </script>
 
-
 </body>
-
 </html>
